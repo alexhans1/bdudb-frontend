@@ -40,29 +40,28 @@ const Dashboard = () => {
   }, []);
 
   const firstTournamentDate = Math.min(
-    ...tournaments.map(({ startdate }) => moment(startdate).valueOf()),
+    ...tournaments.map(({ startDate }) => moment(startDate).valueOf()),
   );
 
   const totalUsers = users.length;
   const activeUsers = users.filter(
     user =>
       user.tournaments.filter(tournament =>
-        moment(tournament.startdate).isAfter(moment().subtract(1, 'years')),
+        moment(tournament.startDate).isAfter(moment().subtract(1, 'years')),
       ).length,
   );
   const activeUsersLastYear = users.filter(
     user =>
       user.tournaments.filter(
         tournament =>
-          moment(tournament.startdate).isAfter(moment().subtract(2, 'years')) &&
-          moment(tournament.startdate).isBefore(moment().subtract(1, 'years')),
+          moment(tournament.startDate).isAfter(moment().subtract(2, 'years')) &&
+          moment(tournament.startDate).isBefore(moment().subtract(1, 'years')),
       ).length,
   );
-  console.log('activeUsersLastYear', activeUsersLastYear);
   const registeredUsers = users.filter(
     user =>
       user.tournaments.filter(tournament =>
-        moment(tournament.startdate).isAfter(moment()),
+        moment(tournament.startDate).isAfter(moment()),
       ).length,
   ).length;
 
@@ -79,8 +78,9 @@ const Dashboard = () => {
     return {
       date: date.toISOString(),
       count: tournaments.filter(
-        ({ startdate, users: tournamentUsers }) =>
-          moment(startdate).isBefore(date) &&
+        ({ startDate, users: tournamentUsers }) =>
+          moment(startDate).isBefore(date) &&
+          // eslint-disable-next-line camelcase
           tournamentUsers.some(({ _pivot_success }) =>
             ['win', 'win2', 'winESL', 'win2ESL'].includes(_pivot_success),
           ),
@@ -120,11 +120,11 @@ const Dashboard = () => {
               />
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
+                dataKey="x"
+                tick={{ fontSize: 'x-small' }}
                 tickFormatter={date =>
                   moment(date, 'YYYYDDMM').format('MMM YY')
                 }
-                dataKey="x"
-                tick={{ fontSize: 'x-small' }}
               />
               <YAxis unit="€" tick={{ fontSize: 'x-small' }} />
               <Tooltip
@@ -176,16 +176,13 @@ const Dashboard = () => {
                 labelLine={false}
               >
                 {activeUsersGenderData.map((entry, index) => (
-                  <Cell fill={COLORS[index % COLORS.length]} key={index} />
+                  <Cell fill={COLORS[index % COLORS.length]} key={entry.name} />
                 ))}
               </Pie>
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
-          <small>
-            <i className="fas fa-venus-mars" style={{ fontSize: '1.5rem' }} />{' '}
-            Active Users
-          </small>
+          <small>Active Users</small>
         </div>
         <div className="box">4</div>
         <div className="box">4</div>

@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
+import { X } from 'react-feather';
+
 import './FlexTable.scss';
 
 class FlexTable extends Component {
   handleToggleCollapse(rowIndex) {
+    const { tableName } = this.props;
     const openCollapse = window.$('.collapse.show');
     const wantedCollapse = window.$(`#rowCollapse_${rowIndex}`);
-    const wantedTableRow = window.$(`#BodyRow_${this.props.tableName}_${rowIndex}`);
+    const wantedTableRow = window.$(`#BodyRow_${tableName}_${rowIndex}`);
     let heightOfOpenCollapse = 0;
-    if (openCollapse.length && openCollapse.offset().top < wantedTableRow.offset().top) {
+    if (
+      openCollapse.length &&
+      openCollapse.offset().top < wantedTableRow.offset().top
+    ) {
       heightOfOpenCollapse = openCollapse.height();
     }
     openCollapse.collapse('hide');
@@ -45,7 +51,10 @@ class FlexTable extends Component {
         {headColumns ? (
           <div className="flex-table-row flex-table-head">
             {headColumns.map((headColumn, index) => (
-              <div key={`HeadRow_${index}`} className="flex-table-cell">
+              <div
+                key={`HeadRow_${Object.values(headColumn)[index]}`}
+                className="flex-table-cell"
+              >
                 <div>
                   {sortColumn ? (
                     <button
@@ -69,7 +78,7 @@ class FlexTable extends Component {
         {bodyRows.map((bodyRow, rowIndex) => (
           <div
             role="button"
-            key={`BodyRow_${rowIndex}`}
+            key={`BodyRow_${Object.values(bodyRow)[rowIndex]}`}
             id={`BodyRow_${tableName}_${rowIndex}`}
             onClick={
               actionOnRowClick
@@ -82,7 +91,9 @@ class FlexTable extends Component {
           >
             <div
               role="row"
-              className={collapse ? 'flex-table-row cursorPointer' : 'flex-table-row'}
+              className={
+                collapse ? 'flex-table-row cursorPointer' : 'flex-table-row'
+              }
               onClick={
                 collapse
                   ? () => {
@@ -92,7 +103,10 @@ class FlexTable extends Component {
               }
             >
               {bodyRow.map((column, columnIndex) => (
-                <div key={`BodyColumn_${columnIndex}`} className="flex-table-cell">
+                <div
+                  key={`BodyColumn_${Object.values(column)[columnIndex]}`}
+                  className="flex-table-cell"
+                >
                   {column}
                 </div>
               ))}
@@ -100,9 +114,8 @@ class FlexTable extends Component {
             {collapse ? (
               <div id={`rowCollapse_${rowIndex}`} className="collapse">
                 <div className="w-100 position-relative">
-                  <i
+                  <X
                     role="button"
-                    className="fas fa-times flex-table-collapse-close"
                     onClick={() => {
                       this.handleToggleCollapse(rowIndex);
                     }}
