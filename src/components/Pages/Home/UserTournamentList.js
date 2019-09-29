@@ -5,7 +5,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import Currency from 'react-currency-formatter';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { useDispatch } from 'react-redux';
-import { Edit, Trash2 } from 'react-feather';
+import { Trash2 } from 'react-feather';
 
 import {
   attendanceStatuses,
@@ -48,13 +48,13 @@ const UserTournamentList = ({ tournaments, history }) => {
       style: { wordBreak: 'break-word' },
     },
     {
-      dataField: 'startdate',
+      dataField: 'startDate',
       text: 'Date',
       isDummyField: true,
       sort: true,
       formatter: (cellContent, row) => (
         <span>
-          {moment(row.startdate).format(DATE_FORMAT)}
+          {moment(row.startDate).format(DATE_FORMAT)}
           <br />
           {moment(row.endDate).format(DATE_FORMAT)}
         </span>
@@ -116,7 +116,6 @@ const UserTournamentList = ({ tournaments, history }) => {
           ref={actionRefs}
           className="d-flex flex-wrap justify-content-center align-items-center"
         >
-          <Edit />
           <Trash2
             className="text-danger m-1 cursorPointer"
             role="button"
@@ -139,7 +138,7 @@ const UserTournamentList = ({ tournaments, history }) => {
       columns={tournamentTableColumns}
       defaultSorted={[
         {
-          dataField: 'startdate',
+          dataField: 'startDate',
           order: 'desc',
         },
       ]}
